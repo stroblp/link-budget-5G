@@ -11,7 +11,7 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'robots.txt'], // Add more assets here
       manifest: {
         // Fill in with your app's manifest properties
-        name: '5G link Budget PWA',
+        name: '5G link Budget',
         short_name: 'Link Budget',
         start_url: '.',
         display: 'standalone',
@@ -32,4 +32,5 @@ export default defineConfig({
       }
      })
   ],
+  base:"/link-budget-5G/"
 })
