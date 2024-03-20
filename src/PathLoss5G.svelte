@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   // Initial default values for the link budget calculation parameters
-  let transmitPowerNodeB = 20; // Transmit power in dBm
+  let transmitPowerNodeB = 27; // Transmit power in dBm
   let transmitCableLossNodeB = 2; // Transmit cable loss in dB
   let transmitterAntennaGainNodeB = 15; // Transmitter antenna gain in dB
   let transmitPowerUT = 23; // Transmit power in dBm
@@ -37,6 +37,7 @@
   let linkBudgetDLStr = "";
   let linkBudgetULStr = "";
   let linkBudgetUL = 0;
+  let linkBudgetTotal =0;
   let EIRPNodeB =0;
 
   $: subCarrierSpacing = 15 * Math.pow(2, numerology);
@@ -78,10 +79,18 @@
     transmitCableLossUT +
     transmitterAntennaGainUT -
     fadingMargin -
-    interferenceMargin -
+    interferenceMargin +
+    transmitterAntennaGainNodeB -
+    transmitCableLossNodeB -
     rxSensitivityNodeB;
-  $: linkBudgetULStr = `MAPL DL = ${transmitPowerUT} - ${transmitCableLossUT} + ${transmitterAntennaGainUT} - ${fadingMargin} - ${interferenceMargin} - ${rxSensitivityNodeB} = ${linkBudgetUL}`;
+  $: linkBudgetULStr = `MAPL UL = ${transmitPowerUT} - ${transmitCableLossUT} + ${transmitterAntennaGainUT} - ${fadingMargin} - ${interferenceMargin} +${transmitterAntennaGainNodeB} - ${transmitCableLossNodeB} - ${rxSensitivityNodeB} = ${linkBudgetUL}`;
 
+  $: if(linkBudgetDL<=linkBudgetUL){
+    linkBudgetTotal = linkBudgetDL
+  }
+  else{
+    linkBudgetTotal = linkBudgetUL
+  }
 
   function roundToDecimal(val, decimal) {
     return Math.round(val * Math.pow(10, decimal)) / Math.pow(10, decimal);
@@ -446,10 +455,13 @@
 
     <div class="w-100 mb-3"></div>
 
-    <p>{linkBudgetDLStr}</p>
-    <p>{linkBudgetULStr}</p>
+    <div class="results-container">
+      <p class="result-item">{linkBudgetDLStr}</p>
+      <p class="result-item">{linkBudgetULStr}</p>
+      <div class="result-total">Total Link Budget: <span>{linkBudgetTotal} dBm</span></div>
+    </div>
 
-    <div class="w-100 mb-3"></div>
+    <!-- <div class="w-100 mb-3"></div>
 
     <div class="col"></div>
     <div class="col"></div>
@@ -469,10 +481,10 @@
     <div class="col-3">
       <label for="pathLoss" class="form-label">Max Path Loss (dB):</label>
       <input type="number" class="form-control" bind:value={pathLoss} />
-    </div>
+    </div> -->
   </div>
 
-  <div class="row"></div>
+  <!-- <div class="row"></div>
 
   <button class="btn btn-primary mt-3" on:click={calculateLinkBudget}
     >Calculate Link Budget</button
@@ -482,7 +494,7 @@
   </div>
   <div class="chart-container">
     <canvas id="pathLossChart"></canvas>
-  </div>
+  </div> -->
 </div>
 
 <style>
@@ -496,4 +508,41 @@
     padding: 0 15px; /* Adjust padding as needed */
     font-size: 16px; /* Optional: Adjust font size as needed */
   }
+
+  .results-container {
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result-item {
+  background-color: #e8eaf6;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.result-total {
+  padding: 15px;
+  background-color: #c5cae9;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  color: #212121;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-total span {
+  background-color: #9fa8da;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+
 </style>
