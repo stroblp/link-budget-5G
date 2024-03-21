@@ -37,8 +37,10 @@
   let linkBudgetDLStr = "";
   let linkBudgetULStr = "";
   let linkBudgetUL = 0;
-  let linkBudgetTotal =0;
-  let EIRPNodeB =0;
+  let linkBudgetTotal = 0;
+  let EIRPNodeB = 0;
+  let dlColorClass = "";
+  let ulColorClass = "";
 
   $: subCarrierSpacing = 15 * Math.pow(2, numerology);
 
@@ -73,7 +75,6 @@
     rxSensitivityUE;
   $: linkBudgetDLStr = `MAPL DL = ${transmitPowerNodeB} - ${transmitCableLossNodeB} + ${transmitterAntennaGainNodeB} - ${fadingMargin} - ${interferenceMargin} - ${rxSensitivityUE} = ${linkBudgetDL}`;
 
-
   $: linkBudgetUL =
     transmitPowerUT -
     transmitCableLossUT +
@@ -85,11 +86,24 @@
     rxSensitivityNodeB;
   $: linkBudgetULStr = `MAPL UL = ${transmitPowerUT} - ${transmitCableLossUT} + ${transmitterAntennaGainUT} - ${fadingMargin} - ${interferenceMargin} +${transmitterAntennaGainNodeB} - ${transmitCableLossNodeB} - ${rxSensitivityNodeB} = ${linkBudgetUL}`;
 
-  $: if(linkBudgetDL<=linkBudgetUL){
-    linkBudgetTotal = linkBudgetDL
+  $: if (linkBudgetDL <= linkBudgetUL) {
+    linkBudgetTotal = linkBudgetDL;
+  } else {
+    linkBudgetTotal = linkBudgetUL;
   }
-  else{
-    linkBudgetTotal = linkBudgetUL
+
+  $: {
+    if (linkBudgetDL < linkBudgetUL) {
+      dlColorClass = "table-success";
+      ulColorClass = "table-danger";
+    } else if (linkBudgetDL > linkBudgetUL) {
+      dlColorClass = "table-danger";
+      ulColorClass = "table-success";
+    } else {
+      // If they are equal, optionally set them to a neutral color or leave them as default
+      dlColorClass = "table-success";
+      ulColorClass = "table-success";
+    }
   }
 
   function roundToDecimal(val, decimal) {
@@ -282,7 +296,9 @@
           />
         </div>
         <div class="col-3">
-          <label for="transmitterGain" class="form-label">Tx Antenna Gain (dB):</label>
+          <label for="transmitterGain" class="form-label"
+            >Tx Antenna Gain (dB):</label
+          >
           <input
             type="number"
             class="form-control"
@@ -300,7 +316,6 @@
             bind:value={transmitPowerNodeB}
           />
         </div>
-      
       </div>
       <h6 class="collapse" id="nodeB">Rx</h6>
       <div class="row collapse" id="nodeB">
@@ -399,7 +414,9 @@
           />
         </div>
         <div class="col-3">
-          <label for="transmitterGain" class="form-label">Tx Antenna Gain (dB):</label>
+          <label for="transmitterGain" class="form-label"
+            >Tx Antenna Gain (dB):</label
+          >
           <input
             type="number"
             class="form-control"
@@ -409,10 +426,8 @@
       </div>
       <h6 class="collapse" id="ueconf">Tx</h6>
       <div class="row collapse" id="ueconf">
-
         <div class="col-3">
-          <label for="transmitPowerUT" class="form-label"
-            >Tx Power (dBm):</label
+          <label for="transmitPowerUT" class="form-label">Tx Power (dBm):</label
           >
           <input
             type="number"
@@ -455,11 +470,66 @@
 
     <div class="w-100 mb-3"></div>
 
-    <div class="results-container">
-      <p class="result-item">{linkBudgetDLStr}</p>
-      <p class="result-item">{linkBudgetULStr}</p>
-      <div class="result-total">Total Link Budget: <span>{linkBudgetTotal} dBm</span></div>
-    </div>
+    <!-- <div class="container mt-3">
+      <div class="p-3 mb-2 bg-light text-dark border rounded">
+        <p class="{dlColorClass} mb-2">
+          {`MAPL DL = ${transmitPowerNodeB} - 
+                                                   ${transmitCableLossNodeB} + 
+                                                   ${transmitterAntennaGainNodeB} - 
+                                                   ${fadingMargin} - 
+                                                   ${interferenceMargin} - 
+                                                   ${rxSensitivityUE} = ${linkBudgetDL}`}
+        </p>
+        <p class="{ulColorClass} mb-2">{linkBudgetULStr}</p>
+        <div class="p-2 bg-primary text-white rounded">
+          Total Link Budget: <span class="fw-bold">{linkBudgetTotal} dBm</span>
+        </div>
+      </div>
+    </div> -->
+    <h4>Maximum Allowable Pathloss</h4>
+    <table class="table">
+      <thead>
+        <th scope="col"  style="width: 10%;">Path</th>
+        <th scope="col" style="width: 10%;">Tx Power</th>
+        <th scope="col" style="width: 10%;">Cable Loss Tx</th>
+        <th scope="col" style="width: 10%;">Antenna Gain Tx</th>
+        <th scope="col" style="width: 10%;">Fading Margin</th>
+        <th scope="col" style="width: 10%;">Interference Margin</th>
+        <th scope="col" style="width: 10%;">Cable Loss Rx</th>
+        <th scope="col" style="width: 10%;">Antenna Gain Rx</th>
+        <th scope="col" style="width: 10%;">Rx Sensitivity</th>
+        <th scope="col" style="width: 10%;">MAPL</th>
+      </thead>
+      <tbody>
+        <tr class="{dlColorClass}">
+          <th scope="row">DL</th>
+          <td>{transmitPowerNodeB}</td>
+          <td>{transmitCableLossNodeB}</td>
+          <td>{transmitterAntennaGainNodeB}</td>
+          <td>{fadingMargin}</td>
+          <td>{interferenceMargin}</td>
+          <td>{transmitCableLossUT}</td>
+          <td>{transmitterAntennaGainUT}</td>
+          <td>{rxSensitivityUE}</td>
+          <td> {linkBudgetDL}</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <tr class="{ulColorClass}">
+            <th scope="row">UL</th>
+          <td>{transmitPowerUT}</td>
+          <td>{transmitCableLossUT}</td>
+          <td>{transmitterAntennaGainUT}</td>
+          <td>{fadingMargin}</td>
+          <td>{interferenceMargin}</td>
+          <td>{transmitCableLossNodeB}</td>
+          <td>{transmitterAntennaGainNodeB}</td>
+          <td>{rxSensitivityNodeB}</td>
+          <td> {linkBudgetUL}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- <div class="w-100 mb-3"></div>
 
@@ -508,41 +578,4 @@
     padding: 0 15px; /* Adjust padding as needed */
     font-size: 16px; /* Optional: Adjust font size as needed */
   }
-
-  .results-container {
-  padding: 20px;
-  margin-top: 20px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.result-item {
-  background-color: #e8eaf6;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-family: 'Arial', sans-serif;
-  color: #333;
-}
-
-.result-total {
-  padding: 15px;
-  background-color: #c5cae9;
-  border-radius: 5px;
-  font-weight: bold;
-  font-family: 'Arial', sans-serif;
-  color: #212121;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.result-total span {
-  background-color: #9fa8da;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: white;
-}
-
 </style>
