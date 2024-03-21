@@ -470,6 +470,39 @@
 
     <div class="w-100 mb-3"></div>
 
+    <div class="row">
+      <button
+        class="btn btn-outline-secondary custom-height col-3"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#pathlosstype"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Path Loss Model
+      </button>
+      <h6 class="collapse" id="pathlosstype">Models</h6>
+      <div class="row collapse" id="pathlosstype">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" disabled>
+          <label class="btn btn-outline-primary" for="btnradio1">RMs-LOS</label>
+        
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+          <label class="btn btn-outline-primary" for="btnradio2">RMa-NLOS</label>
+        
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"  disabled>
+          <label class="btn btn-outline-primary" for="btnradio3">UMs-LOS</label>
+        
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"  checked>
+          <label class="btn btn-outline-primary" for="btnradio4">UMa-NLOS</label>
+        </div>
+      </div>
+      </div>
+
+
+
+     
+
     <!-- <div class="container mt-3">
       <div class="p-3 mb-2 bg-light text-dark border rounded">
         <p class="{dlColorClass} mb-2">
