@@ -287,7 +287,7 @@
       <div class="row collapse" id="nodeB">
         <div class="col-3">
           <label for="transmitCableLoss" class="form-label"
-            >Tx Cable Loss (dB):</label
+            >Cable Loss (dB):</label
           >
           <input
             type="number"
@@ -297,7 +297,7 @@
         </div>
         <div class="col-3">
           <label for="transmitterGain" class="form-label"
-            >Tx Antenna Gain (dB):</label
+            >Antenna Gain (dB):</label
           >
           <input
             type="number"
@@ -347,47 +347,7 @@
       </div>
     </div>
 
-    <div class="w-100 mb-3"></div>
-    <div class="row">
-      <button
-        class="btn btn-outline-secondary custom-height col-3"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#losses"
-        aria-expanded="false"
-        aria-controls="collapseExample"
-      >
-        Loss&Margins
-      </button>
-      <div class="row collapse" id="losses">
-        <div class="col-3">
-          <label for="interferenceMargin" class="form-label"
-            >Interference Margin (dB):</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            bind:value={interferenceMargin}
-          />
-        </div>
-        <div class="col-3">
-          <label for="fadingMargin" class="form-label"
-            >Fading Margin (dB):</label
-          >
-          <input type="number" class="form-control" bind:value={fadingMargin} />
-        </div>
-        <div class="col-3">
-          <label for="penetrationLoss" class="form-label"
-            >Penetration Loss (dB):</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            bind:value={penetrationLoss}
-          />
-        </div>
-      </div>
-    </div>
+
 
     <div class="w-100 mb-3"></div>
     <div class="row">
@@ -405,7 +365,7 @@
       <div class="row collapse" id="ueconf">
         <div class="col-3">
           <label for="transmitCableLoss" class="form-label"
-            >Tx Cable Loss (dB):</label
+            >Cable Loss (dB):</label
           >
           <input
             type="number"
@@ -415,7 +375,7 @@
         </div>
         <div class="col-3">
           <label for="transmitterGain" class="form-label"
-            >Tx Antenna Gain (dB):</label
+            >Antenna Gain (dB):</label
           >
           <input
             type="number"
@@ -485,21 +445,61 @@
       <div class="row collapse" id="pathlosstype">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" disabled>
-          <label class="btn btn-outline-primary" for="btnradio1">RMs-LOS</label>
+          <label class="btn btn-outline-secondary" for="btnradio1">RMs-LOS</label>
         
           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-          <label class="btn btn-outline-primary" for="btnradio2">RMa-NLOS</label>
+          <label class="btn btn-outline-secondary" for="btnradio2">RMa-NLOS</label>
         
           <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"  disabled>
-          <label class="btn btn-outline-primary" for="btnradio3">UMs-LOS</label>
+          <label class="btn btn-outline-secondary" for="btnradio3">UMs-LOS</label>
         
           <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"  checked>
-          <label class="btn btn-outline-primary" for="btnradio4">UMa-NLOS</label>
+          <label class="btn btn-outline-secondary" for="btnradio4">UMa-NLOS</label>
         </div>
       </div>
       </div>
 
-
+      <div class="w-100 mb-3"></div>
+      <div class="row">
+        <button
+          class="btn btn-outline-secondary custom-height col-3"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#losses"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
+          Propagation Loss & Margin
+        </button>
+        <div class="row collapse" id="losses">
+          <div class="col-3">
+            <label for="interferenceMargin" class="form-label"
+              >Interference Margin (dB):</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              bind:value={interferenceMargin}
+            />
+          </div>
+          <div class="col-3">
+            <label for="fadingMargin" class="form-label"
+              >Fading Margin (dB):</label
+            >
+            <input type="number" class="form-control" bind:value={fadingMargin} />
+          </div>
+          <div class="col-3">
+            <label for="penetrationLoss" class="form-label"
+              >Penetration Loss (dB):</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              bind:value={penetrationLoss}
+            />
+          </div>
+        </div>
+      </div>
 
      
 
