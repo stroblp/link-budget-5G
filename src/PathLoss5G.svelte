@@ -55,7 +55,7 @@
     receiveCableLoss -
     rxSensitivity;
 
-  $: cellRadius = calculate3DDistanceFromPathLossUMaNLOS(pathLoss, cftx, 1.5);
+  $: cellRadius = roundToDecimal(calculate3DDistanceFromPathLossUMaNLOS(linkBudgetTotal, cftx, 1.5),2);
 
   $: thermalNoise = roundToDecimal(
     -174 + 10 * Math.log10(subCarrierSpacing * 1000 * 12 * rbCount),
@@ -530,7 +530,7 @@
         </tr>
       </tbody>
     </table>
-
+    <h4> Cell Radius: {cellRadius} m</h4>
     <!-- <div class="w-100 mb-3"></div>
 
     <div class="col"></div>
