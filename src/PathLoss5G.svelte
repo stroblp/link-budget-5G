@@ -41,6 +41,8 @@
   let EIRPNodeB = 0;
   let dlColorClass = "";
   let ulColorClass = "";
+  let pathLossScenarios =["RMa-LOS","RMa-NLOS","UMa-LOS","UMa-NLOS"];
+  let pathLossScenario ="RMa-LOS";
 
   $: subCarrierSpacing = 15 * Math.pow(2, numerology);
 
@@ -105,6 +107,7 @@
       ulColorClass = "table-success";
     }
   }
+  
 
   function roundToDecimal(val, decimal) {
     return Math.round(val * Math.pow(10, decimal)) / Math.pow(10, decimal);
@@ -443,19 +446,40 @@
       </button>
       <h6 class="collapse" id="pathlosstype">Models</h6>
       <div class="row collapse" id="pathlosstype">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" disabled>
+        <div class="btn-group" role="group">
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" disabled bind:group="{pathLossScenario}"  value="RMa-LOS">
           <label class="btn btn-outline-secondary" for="btnradio1">RMs-LOS</label>
-        
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" bind:group="{pathLossScenario}"  value="RMa-NLOS">
           <label class="btn btn-outline-secondary" for="btnradio2">RMa-NLOS</label>
         
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"  disabled>
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"  disabled bind:group="{pathLossScenario}"  value="UMa-LOS">
           <label class="btn btn-outline-secondary" for="btnradio3">UMs-LOS</label>
         
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"  checked>
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"  checked bind:group="{pathLossScenario}"  value="UMa-NLOS">
           <label class="btn btn-outline-secondary" for="btnradio4">UMa-NLOS</label>
         </div>
+        {#if pathLossScenario==="RMa-LOS"}
+        <p>TBD</p>
+        {/if}
+        {#if pathLossScenario==="RMa-NLOS"}
+        <p class="formula">
+          <span>PL<sub>RMa-NLOS</sub> = 31.84 + 21.50 log<sub>10</sub>(d<sub>3D</sub>) + 19.00 log<sub>10</sub>(f<sub>c</sub>)</span>
+        </p>
+        {/if}
+        {#if pathLossScenario==="UMa-LOS"}
+        <p>TBD</p>
+        {/if}
+        {#if pathLossScenario==="UMa-NLOS"}
+        <p class="formula">
+          PL<sub>UMa-NLOS</sub>(d<sub>3D</sub>) = 13.54 + 39.08 log<sub>10</sub>(d<sub>3D</sub>) + 20 log<sub>10</sub>(f<sub>c</sub>) − 0.6 (h<sub>UT</sub> − 1.5)
+        </p>
+        {/if}
+
+
+        
+        
       </div>
       </div>
 
@@ -611,4 +635,13 @@
     padding: 0 15px; /* Adjust padding as needed */
     font-size: 16px; /* Optional: Adjust font size as needed */
   }
+  .formula {
+    font-family: 'Times New Roman', Times, serif; /* or any font that suits mathematical expressions */
+    font-size: 20px; /* Adjust based on your preference */
+}
+
+
+
+/* You can add more styling here based on your needs */
+
 </style>
